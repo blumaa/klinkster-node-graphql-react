@@ -42,7 +42,7 @@ export async function login(args) {
     if (!user) throw new Error('Email does not exist');
     const passwordIsValid = await bcrypt.compareSync(args.password, user.password);
     if (!passwordIsValid) throw new Error('Password incorrect');
-    const token = jwt.sign({ id: user._id }, "mysecret");
+    const token = jwt.sign({ id: user._id }, process.env.SECRET);
     return { token, password: null, ...user._doc }
   }
   catch (err) {
@@ -60,3 +60,5 @@ export async function verifyToken(args) {
     throw err;
   }
 }
+
+// "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlNjc5ZmRlYWFjMjhkMzBmZDMwZmMyYyIsImlhdCI6MTU4Mzg1MDU1M30.nVQP3a9eklp7fRE3fIRbbe5d9X8YSzwsZGYANcXIfzw"
